@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+
+
+
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    function MintoHour() {
+        const [amount, setAmount] = React.useState(0);
+        const [flip, setFliped] = React.useState(false);
+        const onChange = (event) => {
+            setAmount(event.target.value); // event라는 리엑트js만의 가상 신텍스를 보여줌, 거기서 변화에 따른 값을 가져올 수 있음
+        };
+        const reset = () => {
+            setAmount(0);
+        };
+        const onFlip = () => {
+            reset();
+            //setFliped(!flip);
+            setFliped((current) => !current);
+        }
+        return (
+            <div>
+                <div>
+                    <label htmlFor="minutes">Min</label>
+                    <input
+                        value={flip ? amount * 60 : amount}
+                        id="minutes"
+                        placeholder="Minuites"
+                        type="number"
+                        onChange={onChange}
+                        disabled={flip === true} />
+                </div>
+                <div>
+
+                    <label htmlFor="hours">Hr</label>
+                    <input
+                        value={flip ? amount : Math.round(amount / 60)}
+                        id="hourse"
+                        placeholder="Hours"
+                        type="number"
+                        onChange={onChange}
+                        disabled={flip === false} />
+                </div>
+                <button onClick={reset}>Reset</button>
+                <button onClick={onFlip}>{flip ? "Turn back" : "Inverted"}</button>
+            </div>
+        )
+    }
+
+    function KmToMiles() {
+        const [distance, distanceChange] = React.useState(0);
+        const [flip, flipChange] = React.useState(false);
+        const onChange = (event) => {
+            distanceChange(event.target.value);
+        }
+        const reset = () => {
+            distanceChange(0);
+        }
+        const onFlip = () => {
+            reset();
+            flipChange((current) => !current)
+        }
+        return (
+            <div>
+                <div>
+                    <label htmlFor="KM">
+                        KM
+                    </label>
+                    <input
+                        disabled={flip === true}
+                        value={flip ? distance : Math.round(distance / 0.62)}
+                        type="number"
+                        placeholder="KM"
+                        onChange={onChange}
+                    />
+                </div>
+                <label htmlFor="Miles">
+                    Miles
+                </label>
+                <input
+                    disabled={flip === false}
+
+                    value={flip ? Math.round(distance * 0.62) : distance}
+                    type="number"
+                    placeholder="KM"
+                    onChange={onChange}
+                />
+                <div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>{flip ? "Turn back" : "Inverted"}</button>
+                </div>
+            </div>
+        )
+    }
+    function App() {
+        const [index, setIndex] = React.useState("defualt");
+        const onSelect = (event) => {
+            setIndex(event.target.value);
+        }
+
+        return (
+            <div>
+                <h1>Super Converter</h1>
+                <select value={index} onChange={onSelect}>
+                    <option value="defualt">Select your units</option>
+                    <option value="0">Mimutes & Hours</option>
+                    <option value="1">KM & Miles</option>
+
+                </select>
+                {index === "defualt" ? "Please select the option" : null}
+                {index === "0" ? <MintoHour /> : null}
+                {index === "1" ? <KmToMiles /> : null}
+
+            </div>
+        )
+    }
+
+    ReactDOM.render(<App />, root)
+
+
+
+    /*function App() {
+        const [counter, setCounter] = React.useState(0) // (값, 함수) 형식의 Arry로 초기 데이터값과 그걸 바꾸는 함수를 제공
+        const onClick = () => {
+            //setCounter(counter + 1); // 값 업데이트와 리랜더링을 모두 해줌
+            setCounter((current) => current +1);
+        }
+
+        return (
+            <div>
+                <h3 >
+                    Total click:{counter}
+                </h3>
+                <button onClick={onClick} >
+                    clickme
+                </button>
+            </div>
+        );
+    }
+
+
+    ReactDOM.render(<App />, root);
+
+    
+    let counter = 0;
+    function countUp() {
+        counter = counter + 1;
+        reRender();
+    }
+
+    function reRender() {
+        ReactDOM.render(<Container />, root); // 액션이 일어나면 렌더링을 다시 불러줘야 UI에 반영이 됨, 효율적인 방식은 아님
+    }
+
+    const Container = () => (<div>
+        <h3 >
+            Total click:{counter}
+        </h3>
+        <button onClick={countUp} >
+            clickme
+        </button>
+    </div>);
+
+    reRender(); // 카운터가 0, 디폴트 상태일때 처음 랜더링되고, 그 후에 업데이트가 안되기때문에 반영이 안됨
+
+    */
+
+
+
+</script>
+
+</html>
